@@ -61,8 +61,16 @@ mkdir -p $TOOLCHAIN_PATH/utils/bin && cd $TOOLCHAIN_PATH \
 
 #Update vscode conf
 cd $LOCAL_DIR
-if [ -d ".vscode" ]; then sed -i "s@\(\"verilog.linting.path\":\)[^,]*@\1 \"$TOOLCHAIN_PATH/toolchain-iverilog/bin/\"@" .vscode/settings.json; fi
-if [ -d ".vscode" ]; then sed -i "s@\(\"verilog.linting.iverilog.arguments\":\)[^,]*@\1 \"-B $TOOLCHAIN_PATH/toolchain-iverilog/lib/ivl $TOOLCHAIN_PATH/toolchain-yosys/share/yosys/ice40/cells_sim.v src/top.v\"@" .vscode/settings.json; fi
+cat $LOCAL_DIR/toolchain.txt | sed '/^#/d' | grep "toolchain-iverilog" \
+	&& if [ -d ".vscode" ]; then sed -i "s@\(\"verilog.linting.path\":\)[^,]*@\1 \"$TOOLCHAIN_PATH/toolchain-iverilog/bin/\"@" .vscode/settings.json; fi
+cat $LOCAL_DIR/toolchain.txt | sed '/^#/d' | grep "toolchain-yosys" \
+	&& if [ -d ".vscode" ]; then sed -i "s@\(\"verilog.linting.iverilog.arguments\":\)[^,]*@\1 \"-B $TOOLCHAIN_PATH/toolchain-iverilog/lib/ivl $TOOLCHAIN_PATH/toolchain-yosys/share/yosys/ice40/cells_sim.v src/top.v\"@" .vscode/settings.json; fi
+
+cat $LOCAL_DIR/toolchain.txt | sed '/^#/d' | grep "tools-oss-cad-suite" \
+	&& if [ -d ".vscode" ]; then sed -i "s@\(\"verilog.linting.path\":\)[^,]*@\1 \"$TOOLCHAIN_PATH/tools-oss-cad-suite/bin/\"@" .vscode/settings.json; fi
+cat $LOCAL_DIR/toolchain.txt | sed '/^#/d' | grep "tools-oss-cad-suite" \
+	&& if [ -d ".vscode" ]; then sed -i "s@\(\"verilog.linting.iverilog.arguments\":\)[^,]*@\1 \"-B $TOOLCHAIN_PATH/tools-oss-cad-suite/lib/ivl $TOOLCHAIN_PATH/tools-oss-cad-suite/share/yosys/ice40/cells_sim.v src/top.v\"@" .vscode/settings.json; fi
+
 cat $LOCAL_DIR/toolchain.txt | sed '/^#/d' | grep "toolchain-sdcc" \
 	&& if [ -d ".vscode" ]; then sed -i "s@[$$\"].*/sdcc-4.0.0@\"$TOOLCHAIN_PATH/sdcc-4.0.0@" .vscode/c_cpp_properties.json; fi
 
