@@ -13,8 +13,6 @@ GHRD="/zero88/gh-release-downloader"
 GHRD_VERSION=$(curl "https://github.com/$GHRD/releases/latest" -s -L -I -o /dev/null -w '%{url_effective}' | sed -n '{s@.*/@@; p}')
 GHRD_FILE="https://github.com/$GHRD/releases/download/$GHRD_VERSION/ghrd"
 curl -L "$GHRD_FILE" > "$TOOLCHAIN_PATH/ghrd" && chmod +x "$TOOLCHAIN_PATH/ghrd"
-# patch GHRD
-sudo sed -i 's@OUT=/tmp.*@OUT=/tmp/ghrd-$RANDOM.json@' $TOOLCHAIN_PATH/ghrd
 
 #Update PATH
 PATH=$(echo $TOOLCHAIN_PATH):$PATH
